@@ -104,7 +104,7 @@ void delete() {
     if (current!=lines) {
         for (i=current+1; i<lines; i=i+1)
             strCpy(textbuf[i-1], textbuf[i]);
-        lines=lines-1;
+        /*lines=lines-1;*/
     } else
         printf("The current line is just after final line.\n");
 }

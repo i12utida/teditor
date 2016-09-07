@@ -594,11 +594,6 @@ __alcAddr
 	POP
 	JMP	.L128
 .L129
-	LDG	.lines
-	LDC	65535
-	ADD
-	STG	.lines
-	POP
 	JMP	.L130
 .L127
 	LDC	.L126
