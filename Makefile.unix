@@ -1,0 +1,9 @@
+#
+# Makefile.unix : C--言語からMacOSやUNIXの実行形式に変換する手順
+#
+
+teditor: teditor.cmm
+	cm2c -o teditor teditor.cmm
+
+clean:
+	rm -f teditor

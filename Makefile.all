@@ -1,0 +1,39 @@
+#
+# C-- 言語から色々なファイルに変換する手順
+#
+
+INCDIR=/usr/local/cmmInclude
+LIBDIR=/usr/local/cmmLib
+
+CFLAGS+=-Wno-parentheses-equality
+%.c : CPPFLAGS = -DC
+
+# プリプロセッサの実行方法
+CPP=cc -E ${CPPFLAGS} -std=c99 -nostdinc -I${INCDIR} -I${LIBDIR} - < 
+
+all: teditor teditor.v teditor.s teditor.exe
+
+# MacOS, UNIX の実行形式を作る
+teditor: teditor.c
+	cc -o teditor ${CFLAGS} teditor.c ${LIBDIR}/wrapper.c
+
+# TacOS の実行形式を作る
+teditor.exe: teditor.s
+	as-- teditor.s
+	ld-- mod.o /usr/local/cmmLib/libtac.o teditor.o > teditor.sym
+	objexe-- teditor.exe mod.o 600 | sort --key=1 > teditor.map
+
+# C言語に変換する
+teditor.c: teditor.cmm
+	${CPP} teditor.cmm | c-c-- > teditor.c
+
+# C--コンパイラの中間言語に変換する
+teditor.v: teditor.cmm
+	${CPP} teditor.cmm | vm-c-- > teditor.v
+
+# TaCのアセンブリ言語に変換する
+teditor.s: teditor.cmm
+	${CPP} teditor.cmm | c-- > teditor.s
+
+clean:
+	rm -f teditor teditor.c editor.c teditor.s teditor.v *.lst *.sym *.map *.o *.exe *~
