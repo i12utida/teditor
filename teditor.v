@@ -563,23 +563,71 @@ __alcAddr
 .L123
 	RET
 .L126
+	STRING	"/****************************************************************/\n"
+.L127
+	STRING	"L%03d "
+.L128
+	STRING	"%s\n"
+.L129
+	STRING	"/****************************************************************/\n"
+.printAll
+	ENTRY	1
+	LDC	.L126
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	0
+	STL	1
+	POP
+.L130
+	LDL	1
+	LDG	.lines
+	LT
+	JF	.L131
+	LDL	1
+	ARG
+	LDC	.L127
+	ARG
+	CALLF	2,_printf
+	POP
+	LDG	.textbuf
+	LDL	1
+	LDW
+	ARG
+	LDC	.L128
+	ARG
+	CALLF	2,_printf
+	POP
+	LDL	1
+	LDC	1
+	ADD
+	STL	1
+	POP
+	JMP	.L130
+.L131
+	LDC	.L129
+	ARG
+	CALLF	1,_printf
+	POP
+	RET
+.L132
 	STRING	"The current line is just after final line.\n"
 .delete
 	ENTRY	1
 	LDG	.current
 	LDG	.lines
 	NE
-	JF	.L127
+	JF	.L133
 	LDG	.current
 	LDC	1
 	ADD
 	STL	1
 	POP
-.L128
+.L134
 	LDL	1
 	LDG	.lines
 	LT
-	JF	.L129
+	JF	.L135
 	LDG	.textbuf
 	LDL	1
 	LDW
@@ -597,29 +645,28 @@ __alcAddr
 	ADD
 	STL	1
 	POP
-	JMP	.L128
-.L129
-	JMP	.L130
-.L127
-	LDC	.L126
+	JMP	.L134
+.L135
+	JMP	.L136
+.L133
+	LDC	.L132
 	ARG
 	CALLF	1,_printf
 	POP
-.L130
+.L136
 	RET
-.L131
+.L137
 	STRING	"Type new content.\n"
 .insert
 	ENTRY	1
-	CALLP	0,.delete
 	LDG	.lines
 	STL	1
 	POP
-.L132
+.L138
 	LDL	1
 	LDG	.current
 	GT
-	JF	.L133
+	JF	.L139
 	LDG	.textbuf
 	LDL	1
 	LDC	65535
@@ -637,9 +684,9 @@ __alcAddr
 	ADD
 	STL	1
 	POP
-	JMP	.L132
-.L133
-	LDC	.L131
+	JMP	.L138
+.L139
+	LDC	.L137
 	ARG
 	CALLF	1,_printf
 	POP
@@ -653,23 +700,19 @@ __alcAddr
 	ARG
 	CALLF	3,.mygetline
 	POP
-	LDG	.current
-	LDG	.lines
-	EQ
-	JF	.L134
 	LDG	.lines
 	LDC	1
 	ADD
 	STG	.lines
 	POP
-.L134
 	LDG	.current
 	LDC	1
 	ADD
 	STG	.current
 	POP
+	CALLP	0,.printAll
 	RET
-.L135
+.L140
 	STRING	"Jump to?\n"
 .jump
 	ENTRY	1
@@ -678,7 +721,7 @@ __alcAddr
 	CALLF	1,_malloc
 	STL	1
 	POP
-	LDC	.L135
+	LDC	.L140
 	ARG
 	CALLF	1,_printf
 	POP
@@ -698,44 +741,44 @@ __alcAddr
 	LDG	.current
 	LDC	0
 	LT
-	JF	.L136
+	JF	.L141
 	LDC	0
 	STG	.current
 	POP
-.L136
+.L141
 	LDG	.current
 	LDG	.lines
 	GT
-	JF	.L137
+	JF	.L142
 	LDG	.lines
 	STG	.current
 	POP
-.L137
+.L142
 	LDL	1
 	ARG
 	CALLP	1,_free
 	RET
-.L138
+.L143
 	STRING	"%s\n"
-.L139
+.L144
 	STRING	"Type new content.\n"
-.L140
-	STRING	"The current line is just after final line.\n"
+.L145
+	STRING	"nothing to change.\n"
 .change
 	ENTRY	0
 	LDG	.current
 	LDG	.lines
 	NE
-	JF	.L141
+	JF	.L146
 	LDG	.textbuf
 	LDG	.current
 	LDW
 	ARG
-	LDC	.L138
+	LDC	.L143
 	ARG
 	CALLF	2,_printf
 	POP
-	LDC	.L139
+	LDC	.L144
 	ARG
 	CALLF	1,_printf
 	POP
@@ -749,79 +792,39 @@ __alcAddr
 	ARG
 	CALLF	3,.mygetline
 	POP
-	JMP	.L142
-.L141
-	LDC	.L140
+	JMP	.L147
+.L146
+	LDC	.L145
 	ARG
 	CALLF	1,_printf
 	POP
-.L142
+.L147
 	RET
-.L143
+.L148
 	STRING	"%s\n"
-.L144
+.L149
 	STRING	"The current line is just after final line.\n"
 .print
 	ENTRY	0
 	LDG	.current
 	LDG	.lines
 	NE
-	JF	.L145
+	JF	.L150
 	LDG	.textbuf
 	LDG	.current
-	LDW
-	ARG
-	LDC	.L143
-	ARG
-	CALLF	2,_printf
-	POP
-	JMP	.L146
-.L145
-	LDC	.L144
-	ARG
-	CALLF	1,_printf
-	POP
-.L146
-	RET
-.L147
-	STRING	"/****************************************************************/\n"
-.L148
-	STRING	"%s\n"
-.L149
-	STRING	"/****************************************************************/\n"
-.printAll
-	ENTRY	1
-	LDC	.L147
-	ARG
-	CALLF	1,_printf
-	POP
-	LDC	0
-	STL	1
-	POP
-.L150
-	LDL	1
-	LDG	.lines
-	LT
-	JF	.L151
-	LDG	.textbuf
-	LDL	1
 	LDW
 	ARG
 	LDC	.L148
 	ARG
 	CALLF	2,_printf
 	POP
-	LDL	1
-	LDC	1
-	ADD
-	STL	1
-	POP
-	JMP	.L150
-.L151
+	JMP	.L151
+.L150
 	LDC	.L149
 	ARG
 	CALLF	1,_printf
 	POP
+.L151
 	RET
 .L152
 	STRING	"Teditor has these commands.\n"

@@ -100,7 +100,22 @@ void savefile(char[] filename) {
     printf("Saved %s\n",filename);
     fclose(fp);
 }
- 
+
+/*
+ *ファイル内を全て出力
+ */
+void printAll() {
+    int i;
+    printf("/****************************************************************/\n");
+    
+    for(i = 0; i < lines; i = i+1) {
+        printf("L%03d ",i);
+        printf("%s\n",textbuf[i]);          /* 1行ずつ読み込んで出力 */
+    }
+
+    printf("/****************************************************************/\n");
+}
+
 /*
  * 現在の行を削除
  */
@@ -117,17 +132,16 @@ void delete() {
  * ファイルに一行書き込む関数
  */
 void insert() {
-    delete();
     int i;
     for (i=lines; i>current; i=i-1)
     strCpy(textbuf[i], textbuf[i-1]);
     printf("Type new content.\n");
     mygetline(textbuf[current],CHARS,stdin);    /* 新しい内容を入力する */
     /* printf("%s\n",textbuf[current]); */
-    if(current == lines) {
-        lines=lines+1;
-    }
+    
+    lines = lines + 1;
     current=current+1;
+    printAll();
 }
 
 /*
@@ -165,20 +179,6 @@ void print() {
         printf("%s\n",textbuf[current]);
     else
         printf("The current line is just after final line.\n");
-}
-
-/*
- *ファイル内を全て出力
- */
-void printAll() {
-    int i;
-    printf("/****************************************************************/\n");
-    
-    for(i = 0; i < lines; i = i+1) {
-        printf("%s\n",textbuf[i]);          /* 1行ずつ読み込んで出力 */
-    }
-
-    printf("/****************************************************************/\n");
 }
 
 /*
