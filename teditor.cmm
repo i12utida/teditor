@@ -124,7 +124,9 @@ void insert() {
     printf("Type new content.\n");
     mygetline(textbuf[current],CHARS,stdin);    /* 新しい内容を入力する */
     /* printf("%s\n",textbuf[current]); */
-    lines=lines+1;
+    if(current == lines) {
+        lines=lines+1;
+    }
     current=current+1;
 }
 
@@ -152,7 +154,7 @@ void change() {
         printf("Type new content.\n");
         mygetline(textbuf[current],CHARS,stdin);    /* 新しい内容を入力する */
     } else
-        printf("The current line is just after final line.\n");
+        printf("nothing to change.\n");
 }
 
 /*
@@ -163,6 +165,20 @@ void print() {
         printf("%s\n",textbuf[current]);
     else
         printf("The current line is just after final line.\n");
+}
+
+/*
+ *ファイル内を全て出力
+ */
+void printAll() {
+    int i;
+    printf("/****************************************************************/\n");
+    
+    for(i = 0; i < lines; i = i+1) {
+        printf("%s\n",textbuf[i]);          /* 1行ずつ読み込んで出力 */
+    }
+
+    printf("/****************************************************************/\n");
 }
 
 /*
@@ -214,6 +230,8 @@ public int main() {
             delete();
         } else if (strCmp(command,"p")==0) {    /* p: print */
             print();
+        } else if (strCmp(command,"print all")==0) { /* print all:全行出力 */
+            printAll();
         } else if (strCmp(command,"help")==0) { /* help:help */
             help();
         } else {

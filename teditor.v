@@ -653,18 +653,23 @@ __alcAddr
 	ARG
 	CALLF	3,.mygetline
 	POP
+	LDG	.current
+	LDG	.lines
+	EQ
+	JF	.L134
 	LDG	.lines
 	LDC	1
 	ADD
 	STG	.lines
 	POP
+.L134
 	LDG	.current
 	LDC	1
 	ADD
 	STG	.current
 	POP
 	RET
-.L134
+.L135
 	STRING	"Jump to?\n"
 .jump
 	ENTRY	1
@@ -673,7 +678,7 @@ __alcAddr
 	CALLF	1,_malloc
 	STL	1
 	POP
-	LDC	.L134
+	LDC	.L135
 	ARG
 	CALLF	1,_printf
 	POP
@@ -693,44 +698,44 @@ __alcAddr
 	LDG	.current
 	LDC	0
 	LT
-	JF	.L135
+	JF	.L136
 	LDC	0
 	STG	.current
 	POP
-.L135
+.L136
 	LDG	.current
 	LDG	.lines
 	GT
-	JF	.L136
+	JF	.L137
 	LDG	.lines
 	STG	.current
 	POP
-.L136
+.L137
 	LDL	1
 	ARG
 	CALLP	1,_free
 	RET
-.L137
-	STRING	"%s\n"
 .L138
-	STRING	"Type new content.\n"
+	STRING	"%s\n"
 .L139
+	STRING	"Type new content.\n"
+.L140
 	STRING	"The current line is just after final line.\n"
 .change
 	ENTRY	0
 	LDG	.current
 	LDG	.lines
 	NE
-	JF	.L140
+	JF	.L141
 	LDG	.textbuf
 	LDG	.current
 	LDW
 	ARG
-	LDC	.L137
+	LDC	.L138
 	ARG
 	CALLF	2,_printf
 	POP
-	LDC	.L138
+	LDC	.L139
 	ARG
 	CALLF	1,_printf
 	POP
@@ -744,106 +749,148 @@ __alcAddr
 	ARG
 	CALLF	3,.mygetline
 	POP
-	JMP	.L141
-.L140
-	LDC	.L139
+	JMP	.L142
+.L141
+	LDC	.L140
 	ARG
 	CALLF	1,_printf
 	POP
-.L141
-	RET
 .L142
-	STRING	"%s\n"
+	RET
 .L143
+	STRING	"%s\n"
+.L144
 	STRING	"The current line is just after final line.\n"
 .print
 	ENTRY	0
 	LDG	.current
 	LDG	.lines
 	NE
-	JF	.L144
+	JF	.L145
 	LDG	.textbuf
 	LDG	.current
 	LDW
 	ARG
-	LDC	.L142
+	LDC	.L143
 	ARG
 	CALLF	2,_printf
 	POP
-	JMP	.L145
-.L144
-	LDC	.L143
-	ARG
-	CALLF	1,_printf
-	POP
+	JMP	.L146
 .L145
-	RET
-.L146
-	STRING	"Teditor has these commands.\n"
-.L147
-	STRING	"i : insert words\n"
-.L148
-	STRING	"q : quit teditor\n"
-.L149
-	STRING	"j : jump to line which you select\n"
-.L150
-	STRING	"c : overrides the one line\n"
-.L151
-	STRING	"d : delete line\n"
-.L152
-	STRING	"p : print line\n"
-.help
-	ENTRY	0
-	LDC	.L146
+	LDC	.L144
 	ARG
 	CALLF	1,_printf
 	POP
+.L146
+	RET
+.L147
+	STRING	"/****************************************************************/\n"
+.L148
+	STRING	"%s\n"
+.L149
+	STRING	"/****************************************************************/\n"
+.printAll
+	ENTRY	1
 	LDC	.L147
 	ARG
 	CALLF	1,_printf
 	POP
+	LDC	0
+	STL	1
+	POP
+.L150
+	LDL	1
+	LDG	.lines
+	LT
+	JF	.L151
+	LDG	.textbuf
+	LDL	1
+	LDW
+	ARG
 	LDC	.L148
 	ARG
-	CALLF	1,_printf
+	CALLF	2,_printf
 	POP
+	LDL	1
+	LDC	1
+	ADD
+	STL	1
+	POP
+	JMP	.L150
+.L151
 	LDC	.L149
 	ARG
 	CALLF	1,_printf
 	POP
-	LDC	.L150
-	ARG
-	CALLF	1,_printf
-	POP
-	LDC	.L151
-	ARG
-	CALLF	1,_printf
-	POP
+	RET
+.L152
+	STRING	"Teditor has these commands.\n"
+.L153
+	STRING	"i : insert words\n"
+.L154
+	STRING	"q : quit teditor\n"
+.L155
+	STRING	"j : jump to line which you select\n"
+.L156
+	STRING	"c : overrides the one line\n"
+.L157
+	STRING	"d : delete line\n"
+.L158
+	STRING	"p : print line\n"
+.help
+	ENTRY	0
 	LDC	.L152
 	ARG
 	CALLF	1,_printf
 	POP
+	LDC	.L153
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	.L154
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	.L155
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	.L156
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	.L157
+	ARG
+	CALLF	1,_printf
+	POP
+	LDC	.L158
+	ARG
+	CALLF	1,_printf
+	POP
 	RET
-.L153
-	STRING	"Please specify filename.\n"
-.L154
-	STRING	"[%d] Please type command.\n"
-.L155
-	STRING	"j\n"
-.L156
-	STRING	"i"
-.L157
-	STRING	"q"
-.L158
-	STRING	"j"
 .L159
-	STRING	"c"
+	STRING	"Please specify filename.\n"
 .L160
-	STRING	"d"
+	STRING	"[%d] Please type command.\n"
 .L161
-	STRING	"p"
+	STRING	"j\n"
 .L162
-	STRING	"help"
+	STRING	"i"
 .L163
+	STRING	"q"
+.L164
+	STRING	"j"
+.L165
+	STRING	"c"
+.L166
+	STRING	"d"
+.L167
+	STRING	"p"
+.L168
+	STRING	"print all"
+.L169
+	STRING	"help"
+.L170
 	STRING	"Unknown command\n"
 _main
 	ENTRY	3
@@ -857,7 +904,7 @@ _main
 	CALLF	1,_malloc
 	STL	2
 	POP
-	LDC	.L153
+	LDC	.L159
 	ARG
 	CALLF	1,_printf
 	POP
@@ -875,12 +922,12 @@ _main
 	LDG	.newfile
 	LDC	1
 	EQ
-	JF	.L164
+	JF	.L171
 	LDG	.lines
 	STG	.current
 	POP
-	JMP	.L165
-.L164
+	JMP	.L172
+.L171
 	LDG	.lines
 	LDC	1
 	ADD
@@ -889,11 +936,11 @@ _main
 	LDG	.lines
 	STG	.current
 	POP
-.L165
-.L166
+.L172
+.L173
 	LDG	.current
 	ARG
-	LDC	.L154
+	LDC	.L160
 	ARG
 	CALLF	2,_printf
 	POP
@@ -909,78 +956,13 @@ _main
 	LDL	3
 	LDC	65535
 	EQ
-	JF	.L167
-	LDC	.L155
+	JF	.L174
+	LDC	.L161
 	ARG
 	CALLF	1,_printf
 	POP
-	JMP	.L168
-.L167
-	LDC	.L156
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L169
-	CALLP	0,.insert
-	JMP	.L170
-.L169
-	LDC	.L157
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L171
-	JMP	.L168
-.L171
-	LDC	.L158
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L172
-	CALLP	0,.jump
-	JMP	.L173
-.L172
-	LDC	.L159
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L174
-	CALLP	0,.change
 	JMP	.L175
 .L174
-	LDC	.L160
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L176
-	CALLP	0,.delete
-	JMP	.L177
-.L176
-	LDC	.L161
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L178
-	CALLP	0,.print
-	JMP	.L179
-.L178
 	LDC	.L162
 	ARG
 	LDL	2
@@ -988,22 +970,99 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L180
-	CALLP	0,.help
-	JMP	.L181
-.L180
+	JF	.L176
+	CALLP	0,.insert
+	JMP	.L177
+.L176
 	LDC	.L163
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L178
+	JMP	.L175
+.L178
+	LDC	.L164
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L179
+	CALLP	0,.jump
+	JMP	.L180
+.L179
+	LDC	.L165
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L181
+	CALLP	0,.change
+	JMP	.L182
+.L181
+	LDC	.L166
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L183
+	CALLP	0,.delete
+	JMP	.L184
+.L183
+	LDC	.L167
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L185
+	CALLP	0,.print
+	JMP	.L186
+.L185
+	LDC	.L168
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L187
+	CALLP	0,.printAll
+	JMP	.L188
+.L187
+	LDC	.L169
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L189
+	CALLP	0,.help
+	JMP	.L190
+.L189
+	LDC	.L170
 	ARG
 	CALLF	1,_printf
 	POP
-.L181
-.L179
+.L190
+.L188
+.L186
+.L184
+.L182
+.L180
 .L177
+	JMP	.L173
 .L175
-.L173
-.L170
-	JMP	.L166
-.L168
 	LDL	1
 	ARG
 	CALLP	1,.savefile
