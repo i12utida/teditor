@@ -878,28 +878,26 @@ __alcAddr
 	POP
 	RET
 .L160
-	STRING	"Please specify filename.\n"
-.L161
 	STRING	"[%d] Please type command.\n"
-.L162
+.L161
 	STRING	"j\n"
-.L163
+.L162
 	STRING	"i"
-.L164
+.L163
 	STRING	"q"
-.L165
+.L164
 	STRING	"j"
-.L166
+.L165
 	STRING	"c"
-.L167
+.L166
 	STRING	"d"
-.L168
+.L167
 	STRING	"p"
-.L169
+.L168
 	STRING	"print all"
-.L170
+.L169
 	STRING	"help"
-.L171
+.L170
 	STRING	"Unknown command\n"
 _main
 	ENTRY	3
@@ -913,30 +911,20 @@ _main
 	CALLF	1,_malloc
 	STL	2
 	POP
-	LDC	.L160
-	ARG
-	CALLF	1,_printf
-	POP
-	LDG	_stdin
-	ARG
-	LDC	50
-	ARG
-	LDL	1
-	ARG
-	CALLF	3,.mygetline
-	POP
-	LDL	1
+	LDP	2
+	LDC	1
+	LDW
 	ARG
 	CALLP	1,.loadfile
 	LDG	.newfile
 	LDC	1
 	EQ
-	JF	.L172
+	JF	.L171
 	LDG	.lines
 	STG	.current
 	POP
-	JMP	.L173
-.L172
+	JMP	.L172
+.L171
 	LDG	.lines
 	LDC	1
 	ADD
@@ -945,11 +933,11 @@ _main
 	LDG	.lines
 	STG	.current
 	POP
+.L172
 .L173
-.L174
 	LDG	.current
 	ARG
-	LDC	.L161
+	LDC	.L160
 	ARG
 	CALLF	2,_printf
 	POP
@@ -965,13 +953,24 @@ _main
 	LDL	3
 	LDC	65535
 	EQ
-	JF	.L175
-	LDC	.L162
+	JF	.L174
+	LDC	.L161
 	ARG
 	CALLF	1,_printf
 	POP
-	JMP	.L176
-.L175
+	JMP	.L175
+.L174
+	LDC	.L162
+	ARG
+	LDL	2
+	ARG
+	CALLF	2,_strCmp
+	LDC	0
+	EQ
+	JF	.L176
+	CALLP	0,.insert
+	JMP	.L177
+.L176
 	LDC	.L163
 	ARG
 	LDL	2
@@ -979,10 +978,9 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L177
-	CALLP	0,.insert
-	JMP	.L178
-.L177
+	JF	.L178
+	JMP	.L175
+.L178
 	LDC	.L164
 	ARG
 	LDL	2
@@ -991,7 +989,8 @@ _main
 	LDC	0
 	EQ
 	JF	.L179
-	JMP	.L176
+	CALLP	0,.jump
+	JMP	.L180
 .L179
 	LDC	.L165
 	ARG
@@ -1000,10 +999,10 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L180
-	CALLP	0,.jump
-	JMP	.L181
-.L180
+	JF	.L181
+	CALLP	0,.change
+	JMP	.L182
+.L181
 	LDC	.L166
 	ARG
 	LDL	2
@@ -1011,10 +1010,10 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L182
-	CALLP	0,.change
-	JMP	.L183
-.L182
+	JF	.L183
+	CALLP	0,.delete
+	JMP	.L184
+.L183
 	LDC	.L167
 	ARG
 	LDL	2
@@ -1022,10 +1021,10 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L184
-	CALLP	0,.delete
-	JMP	.L185
-.L184
+	JF	.L185
+	CALLP	0,.print
+	JMP	.L186
+.L185
 	LDC	.L168
 	ARG
 	LDL	2
@@ -1033,10 +1032,10 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L186
-	CALLP	0,.print
-	JMP	.L187
-.L186
+	JF	.L187
+	CALLP	0,.printAll
+	JMP	.L188
+.L187
 	LDC	.L169
 	ARG
 	LDL	2
@@ -1044,40 +1043,28 @@ _main
 	CALLF	2,_strCmp
 	LDC	0
 	EQ
-	JF	.L188
-	CALLP	0,.printAll
-	JMP	.L189
-.L188
-	LDC	.L170
-	ARG
-	LDL	2
-	ARG
-	CALLF	2,_strCmp
-	LDC	0
-	EQ
-	JF	.L190
+	JF	.L189
 	CALLP	0,.help
-	JMP	.L191
-.L190
-	LDC	.L171
+	JMP	.L190
+.L189
+	LDC	.L170
 	ARG
 	CALLF	1,_printf
 	POP
-.L191
-.L189
-.L187
-.L185
-.L183
-.L181
-.L178
-	JMP	.L174
-.L176
-	LDL	1
+.L190
+.L188
+.L186
+.L184
+.L182
+.L180
+.L177
+	JMP	.L173
+.L175
+	LDP	2
+	LDC	1
+	LDW
 	ARG
 	CALLP	1,.savefile
-	LDL	1
-	ARG
-	CALLP	1,_free
 	LDL	2
 	ARG
 	CALLP	1,_free

@@ -195,14 +195,11 @@ void help() {
     printf("print all : print all lines\n");
 }
 
-public int main() {
-    char[] filename = malloc(sizeof(char)*BUFLEN);  /* char型配列をint型配列に変換 */
+public int main(int argc,char[][] argv) {
     char[] command = malloc(sizeof(char)*BUFLEN);   /* char型配列をint型配列に変換 */
     int endflag;                                    /* EOFフラグ */
 
-    printf("Please specify filename.\n");
-    mygetline(filename,BUFLEN,stdin);               /* ファイル名をbuf[]に格納 */
-    loadfile(filename);                             /* ファイルの文字列を読み込み */
+    loadfile(argv[1]);                             /* コマンドラインの文字列を読み込み */
 
     if(newfile == true){                            /* ファイルを新しく作った場合 */
         current = lines;                            /* 現在行は今のlinesと同じ */
@@ -214,7 +211,7 @@ public int main() {
 
     while(true){
         printf("[%d] Please type command.\n", current);
-        endflag = mygetline(command,BUFLEN,stdin);
+        endflag = mygetline(command,BUFLEN,stdin);          /* commandにeofが入力されているか調べ、endflagに数値を代入 */
 
         if (endflag==EOF){  /* EOFなら終了 */
             printf("j\n");
@@ -233,14 +230,13 @@ public int main() {
             print();
         } else if (strCmp(command,"print all")==0) { /* print all:全行出力 */
             printAll();
-        } else if (strCmp(command,"help")==0) { /* help:help */
+        } else if (strCmp(command,"help")==0) { /* help:helpを出力 */
             help();
         } else {
             printf("Unknown command\n");
         }
     }
-    savefile(filename);
-    free(filename);
-    free(command);
+    savefile(argv[1]);                          /* ファイルをセーブ */
+    free(command);                              /* commandの配列を解放 */
     return 0;
 }
