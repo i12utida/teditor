@@ -192,6 +192,7 @@ void help() {
     printf("c : overrides the one line\n");
     printf("d : delete line\n");
     printf("p : print line\n");
+    printf("print all : print all lines\n");
 }
 
 public int main() {
